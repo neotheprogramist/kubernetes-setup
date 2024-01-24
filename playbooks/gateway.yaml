@@ -1,0 +1,30 @@
+---
+- name: Setup Gateway API
+  hosts: localhost
+
+  tasks:
+    - name: Create kubevip IP range ConfigMap
+      kubernetes.core.k8s:
+        src: ../resources/gateway/kubevip-cm.yaml
+
+    - name: Create Gateway API CRD
+      kubernetes.core.k8s:
+        src: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+
+    - name: Install NGINX Gateway Fabric Helm chart
+      kubernetes.core.helm:
+        name: nginx-gateway
+        namespace: nginx-gateway
+        chart_ref: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
+        atomic: true
+        create_namespace: true
+        wait: true
+        values: "{{ lookup('file', '../resources/values/gateway.yaml') | from_yaml }}"
+
+    - name: Create the Gateway
+      kubernetes.core.k8s:
+        src: ../resources/gateway/deployment.yaml
+
+    - name: Expose the Gateway
+      kubernetes.core.k8s:
+        src: ../resources/gateway/service.yaml

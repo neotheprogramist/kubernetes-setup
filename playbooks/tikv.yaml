@@ -1,0 +1,32 @@
+---
+- name: Setup TiKV
+  hosts: localhost
+
+  tasks:
+    - name: Create TiDB Operator CRD
+      kubernetes.core.k8s:
+        src: https://raw.githubusercontent.com/pingcap/tidb-operator/v1.5.2/manifests/crd.yaml
+
+    - name: Create TiDB Operator namespace
+      kubernetes.core.k8s:
+        kind: Namespace
+        name: tidb-admin
+
+    - name: Install TiDB Operator
+      kubernetes.core.helm:
+        name: tidb-operator
+        namespace: tidb-admin
+        chart_ref: tidb-operator
+        chart_repo_url: https://charts.pingcap.org/
+        atomic: true
+        wait: true
+        values: "{{ lookup('file', '../resources/values/tidb-operator.yaml') | from_yaml }}"
+
+    - name: Create TiKV namespace
+      kubernetes.core.k8s:
+        kind: Namespace
+        name: tikv
+
+    - name: Install TiKV
+      kubernetes.core.k8s:
+        src: ../resources/tikv/tidb-cluster.yaml

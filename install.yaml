@@ -1,0 +1,9 @@
+---
+- name: Install NGINX Gateway Fabric
+  ansible.builtin.import_playbook: playbooks/gateway.yaml
+
+- name: Install TopoLVM
+  ansible.builtin.import_playbook: playbooks/csi.yaml
+
+- name: Install TiKV
+  ansible.builtin.import_playbook: playbooks/tikv.yaml
