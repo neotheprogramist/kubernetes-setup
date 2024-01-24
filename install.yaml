@@ -1,4 +1,7 @@
 ---
+- name: Load dotenv
+  ansible.builtin.import_playbook: playbooks/dotenv.yaml
+
 - name: Install NGINX Gateway Fabric
   ansible.builtin.import_playbook: playbooks/gateway.yaml
 
@@ -7,3 +10,6 @@
 
 - name: Install TiKV
   ansible.builtin.import_playbook: playbooks/tikv.yaml
+
+- name: Install SurrealDB
+  ansible.builtin.import_playbook: playbooks/surrealdb.yaml

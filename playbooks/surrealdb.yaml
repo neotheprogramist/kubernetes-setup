@@ -1,0 +1,20 @@
+---
+- name: Setup SurrealDB
+  hosts: localhost
+
+  tasks:
+    - name: Install SurrealDB
+      vars:
+        db_user: "{{ env_vars['SURREALDB_USER'] }}"
+        db_pass: "{{ env_vars['SURREALDB_PASS'] }}"
+        credentials: "{{ {'initial_user': db_user, 'initial_pass': db_pass} }}"
+        file_values: "{{ lookup('file', '../resources/values/surrealdb.yaml') | from_yaml }}"
+        combined_values: "{{ file_values | combine({'surrealdb': credentials}, recursive=True) }}"
+      kubernetes.core.helm:
+        name: surrealdb
+        namespace: tikv
+        chart_ref: surrealdb
+        chart_repo_url: https://helm.surrealdb.com
+        atomic: true
+        wait: true
+        values: "{{ combined_values }}"
