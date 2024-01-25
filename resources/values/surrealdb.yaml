@@ -20,7 +20,7 @@ surrealdb:
   # Datastore path
   #
   # * tikv example
-  path: tikv://tikv-pd:2379
+  # path: tikv://tikv-pd:2379
   # path: memory
   # Log configuration
   log: info
