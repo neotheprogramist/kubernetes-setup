@@ -4,4 +4,4 @@ metadata:
   name: kubevip
   namespace: kube-system
 data:
-  range-global: "10.4.4.130-10.4.4.150"
+  range-global: 10.4.4.130-10.4.4.140

@@ -29,8 +29,6 @@
 
     - name: Create TiKV secrets
       vars:
-        tikv_user: "{{ env_vars['TIKV_USER'] }}"
-        tikv_pass: "{{ env_vars['TIKV_PASS'] }}"
         secret_data: "{{ {tikv_user: tikv_pass | b64encode} }}"
       kubernetes.core.k8s:
         name: tidb-secret
@@ -43,4 +41,4 @@
 
     - name: Install TiKV
       kubernetes.core.k8s:
-        src: ../resources/tikv/tidb-cluster.yaml
+        src: ../resources/tidb.yaml

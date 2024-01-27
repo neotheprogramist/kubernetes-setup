@@ -5,7 +5,7 @@
   tasks:
     - name: Create kubevip IP range ConfigMap
       kubernetes.core.k8s:
-        src: ../resources/gateway/kubevip-cm.yaml
+        src: ../resources/kubevip.yaml
 
     - name: Create Gateway API CRD
       kubernetes.core.k8s:
@@ -23,8 +23,4 @@
 
     - name: Create the Gateway
       kubernetes.core.k8s:
-        src: ../resources/gateway/deployment.yaml
-
-    - name: Expose the Gateway
-      kubernetes.core.k8s:
-        src: ../resources/gateway/service.yaml
+        src: ../resources/gateway.yaml

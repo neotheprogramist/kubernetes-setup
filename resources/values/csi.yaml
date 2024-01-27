@@ -7,10 +7,10 @@ image:
 
   # image.tag -- TopoLVM image tag to use.
   # @default -- `{{ .Chart.AppVersion }}`
-  tag:  # 0.18.1
+  tag: 0.25.0
 
   # image.pullPolicy -- TopoLVM image pullPolicy.
-  pullPolicy:  # Always
+  pullPolicy: # Always
 
   # image.pullSecrets -- List of imagePullSecrets.
   pullSecrets: []
@@ -18,23 +18,23 @@ image:
   csi:
     # image.csi.nodeDriverRegistrar -- Specify csi-node-driver-registrar: image.
     # If not specified, `ghcr.io/topolvm/topolvm-with-sidecar:{{ .Values.image.tag }}` will be used.
-    nodeDriverRegistrar:  # registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.2.0
+    nodeDriverRegistrar: # registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.2.0
 
     # image.csi.csiProvisioner -- Specify csi-provisioner image.
     # If not specified, `ghcr.io/topolvm/topolvm-with-sidecar:{{ .Values.image.tag }}` will be used.
-    csiProvisioner:  # registry.k8s.io/sig-storage/csi-provisioner:v2.2.1
+    csiProvisioner: # registry.k8s.io/sig-storage/csi-provisioner:v2.2.1
 
     # image.csi.csiResizer -- Specify csi-resizer image.
     # If not specified, `ghcr.io/topolvm/topolvm-with-sidecar:{{ .Values.image.tag }}` will be used.
-    csiResizer:  # registry.k8s.io/sig-storage/csi-resizer:v1.2.0
+    csiResizer: # registry.k8s.io/sig-storage/csi-resizer:v1.2.0
 
     # image.csi.csiSnapshotter -- Specify csi-snapshot image.
     # If not specified, `ghcr.io/topolvm/topolvm-with-sidecar:{{ .Values.image.tag }}` will be used.
-    csiSnapshotter:  # registry.k8s.io/sig-storage/csi-snapshotter:v5.0.1
+    csiSnapshotter: # registry.k8s.io/sig-storage/csi-snapshotter:v5.0.1
 
     # image.csi.livenessProbe -- Specify livenessprobe image.
     # If not specified, `ghcr.io/topolvm/topolvm-with-sidecar:{{ .Values.image.tag }}` will be used.
-    livenessProbe:  # registry.k8s.io/sig-storage/livenessprobe:v2.3.0
+    livenessProbe: # registry.k8s.io/sig-storage/livenessprobe:v2.3.0
 
 # A scheduler extender for TopoLVM
 scheduler:
@@ -59,9 +59,9 @@ scheduler:
     # scheduler.service.type -- Specify Service type.
     type: LoadBalancer
     # scheduler.service.clusterIP -- Specify Service clusterIP.
-    clusterIP:  # None
+    clusterIP: # None
     # scheduler.service.nodePort -- (int) Specify nodePort.
-    nodePort:  # 30251
+    nodePort: # 30251
 
   # scheduler.updateStrategy -- Specify updateStrategy on the Deployment or DaemonSet.
   updateStrategy: {}
@@ -70,10 +70,10 @@ scheduler:
   #  type: RollingUpdate
 
   # scheduler.terminationGracePeriodSeconds -- (int) Specify terminationGracePeriodSeconds on the Deployment or DaemonSet.
-  terminationGracePeriodSeconds:  # 30
+  terminationGracePeriodSeconds: # 30
 
   # scheduler.minReadySeconds -- (int) Specify minReadySeconds on the Deployment or DaemonSet.
-  minReadySeconds:  # 0
+  minReadySeconds: # 0
 
   # scheduler.affinity -- Specify affinity on the Deployment or DaemonSet.
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -391,7 +391,7 @@ controller:
       #   action: replace
 
   # controller.terminationGracePeriodSeconds -- (int) Specify terminationGracePeriodSeconds.
-  terminationGracePeriodSeconds:  # 10
+  terminationGracePeriodSeconds: # 10
 
   # controller.priorityClassName -- Specify priorityClassName.
   priorityClassName:
@@ -404,7 +404,7 @@ controller:
   #    maxUnavailable: 50%
 
   # controller.minReadySeconds -- (int) Specify minReadySeconds.
-  minReadySeconds:  # 0
+  minReadySeconds: # 0
 
   # controller.affinity -- Specify affinity.
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -591,12 +591,12 @@ livenessProbe:
 # storageClasses -- Whether to create storageclass(es)
 # ref: https://kubernetes.io/docs/concepts/storage/storage-classes/
 storageClasses:
-  - name: topolvm-provisioner  # Defines name of storage class.
+  - name: topolvm-provisioner # Defines name of storage class.
     storageClass:
       # Supported filesystems are: ext4, xfs, and btrfs.
       fsType: xfs
       # reclaimPolicy
-      reclaimPolicy:  # Delete
+      reclaimPolicy: # Delete
       # Additional annotations
       annotations: {}
       # Default storage class for dynamic volume provisioning
@@ -613,9 +613,10 @@ storageClasses:
 
 webhook:
   # webhook.caBundle -- Specify the certificate to be used for AdmissionWebhook.
-  caBundle:  # Base64-encoded, PEM-encoded CA certificate that signs the server certificate.
+  caBundle: # Base64-encoded, PEM-encoded CA certificate that signs the server certificate.
   # webhook.existingCertManagerIssuer -- Specify the cert-manager issuer to be used for AdmissionWebhook.
-  existingCertManagerIssuer: {}
+  existingCertManagerIssuer:
+    {}
     # group: cert-manager.io
     # kind: Issuer
     # name: webhook-issuer
@@ -650,4 +651,3 @@ priorityClass:
 snapshot:
   # snapshot.enabled -- Turn on the snapshot feature.
   enabled: true
-

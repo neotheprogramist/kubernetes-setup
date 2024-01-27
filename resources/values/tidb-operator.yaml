@@ -73,9 +73,9 @@ controllerManager:
     requests:
       cpu: 80m
       memory: 50Mi
-#  # REF: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
-#  priorityClassName: system-cluster-critical
-#
+  #  # REF: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+  #  priorityClassName: system-cluster-critical
+  #
 
   # REF: https://pkg.go.dev/k8s.io/client-go/tools/leaderelection#LeaderElectionConfig
   ## leaderLeaseDuration is the duration that non-leader candidates will wait to force acquire leadership
@@ -127,7 +127,7 @@ controllerManager:
   # - k1==v1
   # - k2!=v2
   ## Env define environments for the controller manager.
-  ## NOTE that the following env names is reserved: 
+  ## NOTE that the following env names is reserved:
   ##  - NAMESPACE
   ##  - TZ
   ##  - HELM_RELEASE
@@ -303,5 +303,3 @@ admissionWebhook:
   #   value: tidb-operator
   #   effect: "NoSchedule"
   #
-
-
