@@ -1,23 +1,63 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-staging-visoft-dev
+spec:
+  secretName: wildcard-staging-visoft-dev-tls
+  duration: 2160h
+  renewBefore: 360h
+  subject:
+    organizations:
+      - visoft.dev
+  privateKey:
+    algorithm: ECDSA
+  dnsNames:
+    - "*.staging.visoft.dev"
+  issuerRef:
+    name: visoft-dev-dns01
+    kind: Issuer
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: nginx-gateway
+  name: nginx-staging-gateway
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: nginx-staging
   listeners:
-    - name: http
+    - name: staging-visoft-dev-http
       protocol: HTTP
       port: 80
+      hostname: "*.staging.visoft.dev"
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              nginx-staging-gateway-access: "true"
+    - name: staging-visoft-dev-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.staging.visoft.dev"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: wildcard-staging-visoft-dev-tls
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              nginx-staging-gateway-access: "true"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-gateway
+  name: nginx-staging-gateway
 spec:
   type: LoadBalancer
   loadBalancerIP: 10.4.4.130
   selector:
-    app.kubernetes.io/instance: nginx-gateway
+    app.kubernetes.io/instance: nginx-staging-gateway
   ports:
     - name: http-tcp
       protocol: TCP

@@ -2,6 +2,9 @@
 - name: Load dotenv
   ansible.builtin.import_playbook: playbooks/dotenv.yaml
 
+- name: Install OCI Distribution
+  ansible.builtin.import_playbook: playbooks/registry.yaml
+
 - name: Install NGINX Gateway Fabric
   ansible.builtin.import_playbook: playbooks/gateway.yaml
 

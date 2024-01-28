@@ -13,15 +13,30 @@
 
     - name: Install NGINX Gateway Fabric Helm chart
       kubernetes.core.helm:
-        name: nginx-gateway
-        namespace: nginx-gateway
+        name: nginx-staging-gateway
+        namespace: nginx-staging-gateway
         chart_ref: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
         atomic: true
         create_namespace: true
         wait: true
         values: "{{ lookup('file', '../resources/values/gateway.yaml') | from_yaml }}"
 
+    - name: Create Cloudflare API token secret
+      kubernetes.core.k8s:
+        name: cloudflare-api-token
+        namespace: nginx-staging-gateway
+        definition:
+          kind: Secret
+          type: Opaque
+          data:
+            api-token: "{{ cloudflare_api_token | b64encode }}"
+
+    - name: Create Cloudflare DNS01 Issuer
+      kubernetes.core.k8s:
+        namespace: nginx-staging-gateway
+        src: ../resources/issuer.yaml
+
     - name: Create the Gateway
       kubernetes.core.k8s:
-        namespace: nginx-gateway
+        namespace: nginx-staging-gateway
         src: ../resources/gateway.yaml
