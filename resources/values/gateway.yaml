@@ -14,7 +14,7 @@ nginxGateway:
       ## Log level. Supported values "info", "debug", "error".
       level: info
   ## The number of replicas of the NGINX Gateway Fabric Deployment.
-  replicaCount: 1
+  replicaCount: 3
   ## The configuration for leader election.
   leaderElection:
     ## Enable leader election. Leader election is used to avoid multiple replicas of the NGINX Gateway Fabric
@@ -71,7 +71,16 @@ terminationGracePeriodSeconds: 30
 tolerations: []
 
 ## The affinity of the NGINX Gateway Fabric pod.
-affinity: {}
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - nginx-gateway
+        topologyKey: kubernetes.io/hostname
 
 serviceAccount:
   annotations: {}
@@ -81,15 +90,13 @@ serviceAccount:
 
 service:
   ## Creates a service to expose the NGINX Gateway Fabric pods.
-  create: true
+  create: false
   ## The type of service to create for the NGINX Gateway Fabric.
   type: LoadBalancer
   ## The externalTrafficPolicy of the service. The value Local preserves the client source IP.
-  # externalTrafficPolicy: Local
+  externalTrafficPolicy: Local
   ## The annotations of the NGINX Gateway Fabric service.
   annotations: {}
-
-  loadBalancerIP: 10.4.4.130
 
   ## A list of ports to expose through the NGINX Gateway Fabric service. Update it to match the listener ports from
   ## your Gateway resource. Follows the conventional Kubernetes yaml syntax for service ports.
@@ -97,19 +104,11 @@ service:
     - port: 80
       targetPort: 80
       protocol: TCP
-      name: http-tcp
+      name: http
     - port: 443
       targetPort: 443
       protocol: TCP
-      name: https-tcp
-    - port: 80
-      targetPort: 80
-      protocol: UDP
-      name: http-udp
-    - port: 443
-      targetPort: 443
-      protocol: UDP
-      name: https-udp
+      name: https
 
 metrics:
   ## Enable exposing metrics in the Prometheus format.

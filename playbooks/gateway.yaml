@@ -23,4 +23,5 @@
 
     - name: Create the Gateway
       kubernetes.core.k8s:
+        namespace: nginx-gateway
         src: ../resources/gateway.yaml
