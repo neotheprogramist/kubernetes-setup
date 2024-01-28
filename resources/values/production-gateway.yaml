@@ -4,10 +4,10 @@ nginxGateway:
   ## gatewayClassName is the name of the GatewayClass that will be created as part of this release. Every NGINX Gateway
   ## Fabric must have a unique corresponding GatewayClass resource. NGINX Gateway Fabric only processes resources that
   ## belong to its class - i.e. have the "gatewayClassName" field resource equal to the class.
-  gatewayClassName: nginx-staging
+  gatewayClassName: nginx-production
   ## The name of the Gateway controller. The controller name must be of the form: DOMAIN/PATH. The controller's domain
   ## is gateway.nginx.org.
-  gatewayControllerName: gateway.nginx.org/nginx-staging-gateway-controller
+  gatewayControllerName: gateway.nginx.org/nginx-production-gateway-controller
   ## The dynamic configuration for the control plane that is contained in the NginxGateway resource.
   config:
     logging:
@@ -79,7 +79,7 @@ affinity:
             - key: app.kubernetes.io/instance
               operator: In
               values:
-                - nginx-staging-gateway
+                - nginx-production-gateway
         topologyKey: kubernetes.io/hostname
 
 serviceAccount:
@@ -122,3 +122,6 @@ metrics:
 ## extraVolumes for the NGINX Gateway Fabric pod. Use in conjunction with
 ## nginxGateway.extraVolumeMounts and nginx.extraVolumeMounts to mount additional volumes to the containers.
 extraVolumes: []
+
+extraArgs:
+  - --feature-gates: ExperimentalGatewayAPISupport=true

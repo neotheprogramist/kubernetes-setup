@@ -30,10 +30,7 @@ spec:
       hostname: "*.staging.visoft.dev"
       allowedRoutes:
         namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              nginx-staging-gateway-access: "true"
+          from: All
     - name: staging-visoft-dev-https
       protocol: HTTPS
       port: 443
@@ -44,10 +41,7 @@ spec:
             name: wildcard-staging-visoft-dev-tls
       allowedRoutes:
         namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              nginx-staging-gateway-access: "true"
+          from: All
 ---
 apiVersion: v1
 kind: Service

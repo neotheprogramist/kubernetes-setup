@@ -16,3 +16,6 @@
 
 - name: Install SurrealDB
   ansible.builtin.import_playbook: playbooks/surrealdb.yaml
+
+- name: Install NGINX Gateway Fabric for production
+  ansible.builtin.import_playbook: playbooks/production.yaml

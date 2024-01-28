@@ -1,0 +1,19 @@
+---
+- name: Setup Gateway API for production
+  hosts: localhost
+
+  tasks:
+    - name: Install NGINX Gateway Fabric Helm chart
+      kubernetes.core.helm:
+        name: nginx-production-gateway
+        namespace: nginx-production-gateway
+        chart_ref: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
+        atomic: true
+        create_namespace: true
+        wait: true
+        values: "{{ lookup('file', '../resources/values/production-gateway.yaml') | from_yaml }}"
+
+    - name: Create the Gateway
+      kubernetes.core.k8s:
+        namespace: nginx-production-gateway
+        src: ../resources/production-gateway.yaml
