@@ -122,6 +122,3 @@ metrics:
 ## extraVolumes for the NGINX Gateway Fabric pod. Use in conjunction with
 ## nginxGateway.extraVolumeMounts and nginx.extraVolumeMounts to mount additional volumes to the containers.
 extraVolumes: []
-
-extraArgs:
-  - --feature-gates: ExperimentalGatewayAPISupport=true

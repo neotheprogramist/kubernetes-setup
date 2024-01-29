@@ -21,17 +21,15 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: nginx-production-gateway
+  annotations:
+    cert-manager.io/issuer: visoft-dev-http01
 spec:
   gatewayClassName: nginx-production
   listeners:
-    - name: production-visoft-dev-https
-      protocol: HTTPS
-      port: 443
+    - name: production-visoft-dev-http
+      protocol: HTTP
+      port: 80
       hostname: hosting.visoft.dev
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: hosting-visoft-dev-tls
       allowedRoutes:
         namespaces:
           from: All
@@ -46,10 +44,18 @@ spec:
   selector:
     app.kubernetes.io/instance: nginx-production-gateway
   ports:
+    - name: http-tcp
+      protocol: TCP
+      port: 80
+      targetPort: 80
     - name: https-tcp
       protocol: TCP
       port: 443
       targetPort: 443
+    - name: http-udp
+      protocol: UDP
+      port: 80
+      targetPort: 80
     - name: https-udp
       protocol: UDP
       port: 443
