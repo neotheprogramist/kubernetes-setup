@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: ./generate-htpasswd.sh {user} {password}"
-    exit 1
-fi
-
-podman run --entrypoint htpasswd httpd:2 -Bbn $1 $2
+source .env && \
+podman run --entrypoint htpasswd httpd:2 -Bbn $STAGING_REGISTRY_USER $STAGING_REGISTRY_PASS
+podman run --entrypoint htpasswd httpd:2 -Bbn $PROD_REGISTRY_USER $PROD_REGISTRY_PASS

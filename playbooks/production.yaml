@@ -13,6 +13,11 @@
         wait: true
         values: "{{ lookup('file', '../resources/values/production-gateway.yaml') | from_yaml }}"
 
+    - name: Create HTTP01 Issuer
+      kubernetes.core.k8s:
+        namespace: nginx-production-gateway
+        src: ../resources/production-issuer.yaml
+
     - name: Create the Gateway
       kubernetes.core.k8s:
         namespace: nginx-production-gateway
