@@ -1,22 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: hosting-visoft-dev
-spec:
-  secretName: hosting-visoft-dev-tls
-  duration: 2160h
-  renewBefore: 360h
-  subject:
-    organizations:
-      - visoft.dev
-  privateKey:
-    algorithm: ECDSA
-  dnsNames:
-    - hosting.visoft.dev
-  issuerRef:
-    name: visoft-dev-http01
-    kind: Issuer
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -30,6 +11,52 @@ spec:
       protocol: HTTP
       port: 80
       hostname: hosting.visoft.dev
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: production-visoft-dev-https
+      protocol: HTTPS
+      port: 443
+      hostname: hosting.visoft.dev
+      tls:
+        certificateRefs:
+          - name: hosting-visoft-dev-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: hunters-visoft-dev-http
+      protocol: HTTP
+      port: 80
+      hostname: hunters.visoft.dev
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: hunters-visoft-dev-https
+      protocol: HTTPS
+      port: 443
+      hostname: hunters.visoft.dev
+      tls:
+        certificateRefs:
+          - name: hunters-visoft-dev-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: selftech-pl-http
+      protocol: HTTP
+      port: 80
+      hostname: selftech.pl
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: selftech-pl-https
+      protocol: HTTPS
+      port: 443
+      hostname: selftech.pl
+      tls:
+        certificateRefs:
+          - name: selftech-pl-tls
       allowedRoutes:
         namespaces:
           from: All
